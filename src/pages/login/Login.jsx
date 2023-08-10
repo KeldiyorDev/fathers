@@ -35,7 +35,7 @@ function Login() {
                             {/* <div className="app-brand justify-content-center pb-0 mb-2">
                                 <img src="../assets/img/logo.png" alt="" height={"150px"} />
                             </div> */}
-                            <h4 className="mb-2 justify-content-center text-center" style={{ color: "#152b03", fontWeight: "700" }}>Otalar reytingiga kirish</h4>
+                            <h4 className="mb-2 justify-content-center text-center" style={{ color: "#152b03", fontWeight: "700" }}>Ota-onalar reytingi tizimiga xush kelibsiz!</h4>
                             <form onSubmit={login}>
                                 <div className="mb-3">
                                     <label for="email" className="form-label" style={{ color: "#152b03", fontWeight: "700" }}>Login</label>
