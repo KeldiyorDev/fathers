@@ -1,9 +1,8 @@
 import React, { useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const inputRef = useRef(null);
-  const navigate = useNavigate()
 
   const deleteFunc = () => {
     localStorage.clear()
