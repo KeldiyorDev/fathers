@@ -7,6 +7,9 @@ function Navbar() {
   const deleteFunc = () => {
     localStorage.clear()
   }
+
+  const user = JSON.parse(localStorage.getItem("user"))
+
   return (
     <>
       <nav
@@ -29,7 +32,6 @@ function Navbar() {
                 className="form-control border-0 shadow-none"
                 placeholder="Qidiruv."
                 aria-label="Search..."
-              // onKeyDown={search}
               />
             </div>
           </div>
@@ -51,8 +53,32 @@ function Navbar() {
                         </div>
                       </div>
                       <div className="flex-grow-1">
-                        <span className="fw-semibold d-block">Dilshodjon</span>
-                        <small className="text-muted">Admin</small>
+                        {
+                          user?.role === `admin` && (
+                            <>
+                              <span className="fw-semibold d-block">{user?.mudir}</span>
+                              <small className="text-muted">Mudir (G'ijduvon tumani)</small>
+                            </>
+                          )
+                        }
+
+                        {
+                          user?.role === `director` && (
+                            <>
+                              <span className="fw-semibold d-block">{user?.director}</span>
+                              <small className="text-muted">Direktor ({user?.name})</small>
+                            </>
+                          )
+                        }
+
+{
+                          user?.role === `classleader` && (
+                            <>
+                              <span className="fw-semibold d-block">{user?.leaderName}</span>
+                              <small className="text-muted"> Sinf rahbar ({user?.name})</small>
+                            </>
+                          )
+                        }
                       </div>
                     </div>
                   </a>
@@ -63,10 +89,10 @@ function Navbar() {
                 <li>
                   <Link className="dropdown-item" to="/" onClick={() => deleteFunc()}>
                     <i className="bx bx-power-off me-2"></i>
-                    <span className="align-middle">Log Out</span>
+                    <span className="align-middle">Chiqish</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link className="dropdown-item" to="/" onClick={() => deleteFunc()}>
                     <i className="bx bx-power-off me-2"></i>
                     <span className="align-middle">Log Out</span>
@@ -80,7 +106,7 @@ function Navbar() {
                     <i className="bx bx-power-off me-2"></i>
                     <span className="align-middle">Log Out</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </li>
           </ul>

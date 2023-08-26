@@ -4,6 +4,7 @@ import { AiFillEye } from "react-icons/ai";
 import AlertContent, { Alert } from '../../components/Alert';
 import axiosInstance from '../../utils/config';
 import EditModal from './modal/EditModal';
+import Pagination from '../../components/Pagination';
 
 function Unread() {
   const [alert, setAlert] = useState({ open: false, color: "", text: "" });
@@ -11,10 +12,27 @@ function Unread() {
 
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    axiosInstance.get(`/Posts/GetPosts?isseen=false&page=1&limit=10`)
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [elements, setElements] = useState()
+
+  const handlePageClick = (e) => {
+    setPage(e?.selected + 1)
+    console.log(e?.selected + 1)
+
+    axiosInstance.get(`/Posts/GetPosts?isseen=false&limit=${limit}&page=${e?.selected + 1}`)
       .then((res) => {
         setData(res.data.elements);
+        setElements(res?.data?.total)
+        console.log(res.data);
+      })
+  }
+
+  useEffect(() => {
+    axiosInstance.get(`/Posts/GetPosts?isseen=false&limit=${limit}&page=${page}`)
+      .then((res) => {
+        setData(res.data.elements);
+        setElements(res?.data?.total)
         console.log(res.data);
       })
   }, [])
@@ -74,6 +92,15 @@ function Unread() {
 
             </tbody>
           </table>
+
+          <div className="col-lg-12 mt-2">
+            <Pagination
+              page={page}
+              limit={limit}
+              elements={elements}
+              handlePageClick={handlePageClick}
+            />
+          </div>
         </div>
       </div>
 

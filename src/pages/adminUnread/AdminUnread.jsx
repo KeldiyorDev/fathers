@@ -22,8 +22,8 @@ function AdminUread() {
   const [elements, setElements] = useState()
 
   const handlePageClick = (e) => {
-    setPage(e?.selected)
-    console.log(e?.selected)
+    setPage(e?.selected + 1)
+    console.log(e?.selected + 1)
     if (schoolId === "0") {
       axiosInstance.get(`/Posts/GetAllPosts?limit=${limit}&page=${e?.selected + 1}&isseen=false`)
         .then((res) => {
@@ -168,14 +168,17 @@ function AdminUread() {
             </tbody>
           </table>
 
-          <div className="col-lg-12 mt-2">
-            <Pagination
-              page={page}
-              limit={limit}
-              elements={elements}
-              handlePageClick={handlePageClick}
-            />
-          </div>
+
+          {
+            data?.length > 0 && <div className="col-lg-12 mt-2">
+              <Pagination
+                page={page}
+                limit={limit}
+                elements={elements}
+                handlePageClick={handlePageClick}
+              />
+            </div>
+          }
 
 
         </div>

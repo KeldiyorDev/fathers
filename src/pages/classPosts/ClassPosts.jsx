@@ -1,39 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import axiosInstance from '../../utils/config';
-import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
+import {AiFillEye } from "react-icons/ai";
 import AlertContent, { Alert } from '../../components/Alert';
-import DeleteModal from './modal/DeleteModal';
 import EditModal from './modal/EditModal';
-import AddModal from './modal/AddModal';
+import Pagination from '../../components/Pagination';
 
 function ClassPosts() {
     const [alert, setAlert] = useState({ open: false, color: "", text: "" });
 
-    const [addModal, setAddModal] = useState(false)
     const [editModal, setEditModal] = useState({ isShow: false, item: {} })
-    const [deleteModal, setDeleteModal] = useState({ isShow: false, id: 0 })
-
 
     const [data, setData] = useState([])
 
-    useEffect(() => {
-        axiosInstance.get(`/Posts/GetClassPosts?limit=10&page=1`)
+    const [page, setPage] = useState(1)
+    const [limit, setLimit] = useState(10)
+    const [elements, setElements] = useState()
+
+    const handlePageClick = (e) => {
+        setPage(e?.selected + 1)
+        console.log(e?.selected + 1)
+
+        axiosInstance.get(`/Posts/GetClassPosts?limit=${limit}&page=${e?.selected + 1}`)
             .then((res) => {
                 setData(res.data.elements);
+                setElements(res.data.total)
+                console.log(res.data);
+            })
+    }
+
+    useEffect(() => {
+        axiosInstance.get(`/Posts/GetClassPosts?limit=${limit}&page=${page}`)
+            .then((res) => {
+                setData(res.data.elements);
+                setElements(res.data.total)
                 console.log(res.data);
             })
     }, [])
-
-    // localStorage.setItem("posts", JSON.stringify(data));
-
-    // useEffect(() => {
-    //     axiosInstance.get(`/tumanxtb/Categories/GetAll`)
-    //         .then((res) => {
-    //             setData(res.data.elements);
-    //             console.log(res.data);
-    //         })
-    // }, [])
 
     return (
         <Wrapper>
@@ -88,21 +91,19 @@ function ClassPosts() {
 
                         </tbody>
                     </table>
+
+                    {
+                        data?.length > 0 && <div className="col-lg-12 mt-2">
+                            <Pagination
+                                page={page}
+                                limit={limit}
+                                elements={elements}
+                                handlePageClick={handlePageClick}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
-
-            {
-                addModal && (
-                    <AddModal
-                        data={data}
-                        setData={setData}
-                        addModal={addModal}
-                        setAddModal={setAddModal}
-                        Alert={Alert}
-                        setAlert={setAlert}
-                    />
-                )
-            }
 
             {
                 editModal.isShow && (
@@ -113,19 +114,9 @@ function ClassPosts() {
                         setEditModal={setEditModal}
                         Alert={Alert}
                         setAlert={setAlert}
-                    />
-                )
-            }
-
-            {
-                deleteModal.isShow && (
-                    <DeleteModal
-                        data={data}
-                        setData={setData}
-                        deleteModal={deleteModal}
-                        setDeleteModal={setDeleteModal}
-                        Alert={Alert}
-                        setAlert={setAlert}
+                        setElements={setElements}
+                        page={page}
+                        limit={limit}
                     />
                 )
             }

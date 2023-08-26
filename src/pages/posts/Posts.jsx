@@ -4,6 +4,7 @@ import { AiFillEye } from "react-icons/ai";
 import AlertContent, { Alert } from '../../components/Alert';
 import axiosInstance from '../../utils/config';
 import EditModal from './modal/EditModal';
+import Pagination from '../../components/Pagination';
 
 function Posts() {
   const [alert, setAlert] = useState({ open: false, color: "", text: "" });
@@ -14,6 +15,30 @@ function Posts() {
 
   const [schoolId, setSchoolId] = useState("0")
 
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [elements, setElements] = useState()
+
+  const handlePageClick = (e) => {
+    setPage(e?.selected + 1)
+    console.log(e?.selected + 1)
+    if (schoolId === "0") {
+      axiosInstance.get(`/Posts/GetAllPosts?limit=${limit}&page=${e?.selected + 1}&isseen=true`)
+        .then((res) => {
+          console.log(res.data?.elements);
+          setData(res.data?.elements);
+          setElements(res.data.total)
+        })
+    } else {
+      axiosInstance.get(`/Posts/GetSeenSchoolPosts?limit=${limit}&page=${e?.selected + 1}&schoolid=${schoolId}`)
+        .then((res) => {
+          setData(res.data.elements);
+          setElements(res.data.total)
+          console.log(res.data);
+        })
+    }
+  }
+
   useEffect(() => {
     axiosInstance.get(`/tumanxtb/Schools/GetAll`)
       .then((res) => {
@@ -23,28 +48,31 @@ function Posts() {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`/Posts/GetAllPosts?limit=10&page=1&isseen=true`)
+    axiosInstance.get(`/Posts/GetAllPosts?limit=${limit}&page=${page}&isseen=true`)
       .then((res) => {
         console.log(res.data?.elements);
         setData(res.data?.elements);
+        setElements(res.data.total)
       })
   }, [])
 
   const selected = (e) => {
     setSchoolId(e?.target?.value)
     if (e?.target?.value === "0") {
-      axiosInstance.get(`/Posts/GetAllPosts?limit=10&page=1&isseen=true`)
+      axiosInstance.get(`/Posts/GetAllPosts?limit=${limit}&page=${page}&isseen=true`)
         .then((res) => {
           console.log(res.data?.elements);
           setData(res.data?.elements);
+          setElements(res.data.total)
         })
     } else {
       const id = schools?.filter((item) => item.id === Number(e?.target?.value))?.[0]?.id
       console.log(id);
 
-      axiosInstance.get(`/Posts/GetSeenSchoolPosts?limit=10&page=1&schoolid=${id}`)
+      axiosInstance.get(`/Posts/GetSeenSchoolPosts?limit=${limit}&page=${page}&schoolid=${id}`)
         .then((res) => {
           setData(res.data.elements);
+          setElements(res.data.total)
           console.log(res.data);
         })
     }
@@ -86,50 +114,63 @@ function Posts() {
         <div className="card-body">
           {
             data?.length > 0 ? (
-              <table className="table table-primary table-bordered align-middle mb-0 table-striped">
-                <thead>
-                  <tr className='text-center'>
-                    <th>№</th>
-                    <th>Nomi</th>
-                    <th>Kategoriya nomi</th>
-                    <th>Sinfi</th>
-                    <th>Ismi</th>
-                    <th>Qiymati</th>
-                    <th>Qo'shilgan sanasi</th>
-                    <th>Status</th>
-                    <th>Amallar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.map((item, index) => {
-                    return (
-                      <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-success" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
-                        <th>{index + 1}</th>
-                        {/* <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td> */}
-                        <td>{item.name}</td>
-                        <td>{item.categoryName}</td>
-                        <td>{item?.className}</td>
-                        <td>{item?.fathersName}</td>
-                        <td>{item.price}</td>
-                        <td>{item.dateTime?.substr(0, 10)?.split("-")?.reverse().join(".")}</td>
-                        <td>{item.description}</td>
-                        <td className="text-center">
-                          <AiFillEye fontSize={"24px"} cursor={"pointer"} color='#696cff' style={{ margin: "0 8px" }}
-                            onClick={() => setEditModal({ isShow: true, item: item })}
-                          />
+              <>
+                <table className="table table-primary table-bordered align-middle mb-0 table-striped">
+                  <thead>
+                    <tr className='text-center'>
+                      <th>№</th>
+                      <th>Nomi</th>
+                      <th>Kategoriya nomi</th>
+                      <th>Sinfi</th>
+                      <th>Ismi</th>
+                      <th>Qiymati</th>
+                      <th>Qo'shilgan sanasi</th>
+                      <th>Status</th>
+                      <th>Amallar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.map((item, index) => {
+                      return (
+                        <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-success" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
+                          <th>{index + 1}</th>
+                          {/* <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td> */}
+                          <td>{item.name}</td>
+                          <td>{item.categoryName}</td>
+                          <td>{item?.className}</td>
+                          <td>{item?.fathersName}</td>
+                          <td>{item.price}</td>
+                          <td>{item.dateTime?.substr(0, 10)?.split("-")?.reverse().join(".")}</td>
+                          <td>{item.description}</td>
+                          <td className="text-center">
+                            <AiFillEye fontSize={"24px"} cursor={"pointer"} color='#696cff' style={{ margin: "0 8px" }}
+                              onClick={() => setEditModal({ isShow: true, item: item })}
+                            />
 
-                          {/* <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }}
+                            {/* <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }}
                                                         onClick={() => setEditModal({ isShow: true, item: item })}
                                                     /> */}
 
-                        </td>
-                      </tr>
-                    )
-                  })
-                  }
+                          </td>
+                        </tr>
+                      )
+                    })
+                    }
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+
+
+                <div className="col-lg-12 mt-2">
+                  <Pagination
+                    page={page}
+                    limit={limit}
+                    elements={elements}
+                    handlePageClick={handlePageClick}
+                  />
+                </div>
+
+              </>
             ) : (
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "16px" }} >
                 <img src="/assets/img/search.png" alt=""

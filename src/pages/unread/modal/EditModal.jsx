@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
 import axiosInstance from '../../../utils/config';
 import { useEffect } from 'react';
+import { styled } from 'styled-components';
+import SeenModal from '../../../components/SeenModal';
 
 function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) {
     const name = useRef()
@@ -11,9 +13,12 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
     const [telegram, setTelegram] = useState(false)
     const [web, setWeb] = useState(false)
 
+    const [seen, setSeen] = useState({ isShow: false, item: "" })
+
     console.log(editModal);
 
     const [category, setCategory] = useState([])
+    const [base64Strings2, setBase64Strings2] = useState([]);
 
     useEffect(() => {
         axiosInstance.get(`/tumanxtb/Categories/GetAll`)
@@ -29,6 +34,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
         axiosInstance.get(`/Posts/Get?postid=${editModal?.item?.id}`)
             .then((res) => {
                 setData1(res.data);
+                setBase64Strings2(res?.data?.images)
                 console.log(res.data);
             })
     }, [editModal?.item?.id])
@@ -238,15 +244,36 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                     </div>
                                 </div>
 
-                                <div className="col-lg-12">
-                                    <div className="mb-3">
-                                        <label for="formFileMultiple" className="form-label">Rasm yuklang</label>
-                                        <input className="form-control" type="file" id="formFileMultiple" multiple={true}
-                                            accept="image/*"
-                                            title='Rasm yuklang'
-                                            onChange={(e) => changeFile(e)} />
-                                    </div>
-                                </div>
+                                <Wrapper>
+
+                                    {
+                                        (base64Strings2?.length > 0) ? (
+                                            <div className="drop-file-preview">
+                                                <p className="drop-file-preview__title">
+                                                    <b style={{ fontSize: "18px" }}>Yuborilgan rasmlar: </b>
+                                                </p>
+
+                                                <div className="row">
+                                                    {
+                                                        base64Strings2?.length > 0 && base64Strings2.map((item, index) => (
+                                                            <div className="col-lg-6" key={index}>
+                                                                <div className="drop-file-preview__item">
+                                                                <img src={item} alt="" className='image' style={{cursor: "pointer"}}
+                                                                    onClick={() => setSeen({ isShow: true, item: item })} />
+                                                                    <div className="drop-file-preview__item__info">
+                                                                        <p>rasm {index + 1}</p>
+                                                                        <p>{Math.ceil(item.length / 1024)} KB</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+
+                                            </div>
+                                        ) : null
+                                    }
+                                </Wrapper>
 
                                 <div className="col-lg-4">
                                     <div className="mb-3">
@@ -283,8 +310,116 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                     </div>
                 </div>
             </div>
+
+            {
+                seen.isShow && (
+                    <SeenModal
+                        seen={seen}
+                        setSeen={setSeen}
+                    />
+                )
+            }
         </div>
     )
 }
 
 export default EditModal
+
+
+const Wrapper = styled.div`
+    .drop-file-input {
+    position: relative;
+    height: 200px;
+    border: 2px dashed #4267b2;
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #f5f8ff;
+}
+
+.drop-file-input input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.drop-file-input:hover,
+.drop-file-input.dragover {
+    opacity: 0.6;
+}
+
+.drop-file-input__label {
+    text-align: center;
+    color: #ccc;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.drop-file-preview__item .image {
+    height: 50px;
+    object-fit: contain;
+}
+
+.drop-file-preview {
+    margin-top: 8px;
+}
+
+.drop-file-preview p {
+    font-weight: 500;
+}
+
+.drop-file-preview__title {
+    margin-bottom: 20px;
+}
+
+.drop-file-preview__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #f5f8ff;
+    padding: 15px;
+    border-radius: 20px;
+}
+
+.drop-file-preview__item img {
+    width: 50px;
+    margin-right: 20px;
+}
+
+.drop-file-preview__item__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    justify-content: center;
+}
+
+.drop-file-preview__item__del {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.drop-file-preview__item:hover .drop-file-preview__item__del {
+    opacity: 1;
+}
+    border-radius: 20px;
+`
