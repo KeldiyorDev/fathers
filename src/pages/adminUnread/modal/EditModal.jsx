@@ -2,14 +2,10 @@ import React, { useRef, useState } from 'react'
 import axiosInstance from '../../../utils/config';
 import { useEffect } from 'react';
 
-function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, posts, setPosts, retingModal }) {
+function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, schoolId }) {
     const name = useRef()
     const title = useRef()
     const izoh = useRef()
-    const selectRef = useRef()
-    const [select, setSelect] = useState(0)
-    const [price, setPrice] = useState(editModal?.item?.price)
-    const [file, setFile] = useState([])
 
     console.log(editModal);
 
@@ -33,51 +29,31 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
             })
     }, [editModal?.item?.id])
 
-    const editFunc = (e) => {
-        e.preventDefault()
-        console.log({
-            name: name.current.value,
-            title: title.current.value,
-            message: izoh.current.value,
-            userId: data?.[0]?.id,
-            categoryId: Number(selectRef?.current?.value),
-            id: editModal?.item?.id,
-        })
-        axiosInstance.put(`/Posts/Update?postid=${editModal.item.id}`, {
-            name: name.current.value,
-            title: title.current.value,
-            message: izoh.current.value,
-            userId: data?.[0]?.id,
-            categoryId: Number(selectRef?.current?.value),
-            // id: editModal?.item?.id,
-        }).then((res) => {
-            Alert(setAlert, "success", "Muvafaqqiyatli o'zgartirildi!");
-
-            axiosInstance.get(`/Posts/GetByUser?userid=${retingModal?.item?.id}`)
-                .then((res) => {
-                    setPosts(res.data.elements);
-                    console.log(res.data);
-                })
-            setEditModal({ isShow: false, item: {} })
-        })
+    const telegramSending = (bool, postid) => {
+        axiosInstance.get(`/Posts/AccessForTelegramChannel?postid=${postid}&allow=${bool}`)
+            .then((res) => {
+                axiosInstance.get(`/Posts/GetSchoolPostsForTXTB?limit=10&page=1&schoolid=${schoolId}`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
+                Alert(setAlert, "info", "Muvaffaqiyatli bajarildi");
+                setEditModal({ isShow: false, item: {} })
+            })
     }
 
-    const changeFile = (e) => {
-        // let img = new Image()
-        // img.src = window.URL.createObjectURL(e.target.files)
-        setFile(e.target.files);
-        console.log(e.target.files);
-    }
+    const webSending = (bool, postid) => {
+        axiosInstance.get(`/Posts/AccessForWebSite?postid=${postid}&allow=${bool}`)
+            .then((res) => {
+                axiosInstance.get(`/Posts/GetSchoolPostsForTXTB?limit=10&page=1&schoolid=${schoolId}`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
 
-    const selected = (e) => {
-        setSelect(e?.target.value)
-
-        category?.forEach((item) => {
-            if (item.id === Number(e?.target.value)) {
-                setPrice(item.value);
-                console.log(item.value);
-            }
-        })
+                Alert(setAlert, "info", "Muvaffaqiyatli bajarildi");
+                setEditModal({ isShow: false, item: {} })
+            })
     }
 
     return (
@@ -85,12 +61,12 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
             <div className="modal-dialog-centered" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="modal-content" >
                     <div className="modal-header bg-primary py-3">
-                        <h5 className="modal-title text-white">Postni tahrirlash</h5>
+                        <h5 className="modal-title text-white">Postni ko'rish</h5>
                         <button type="button" className="btn-close"
                             onClick={() => setEditModal({ isShow: false, item: {} })}></button>
                     </div>
-                    <div className="modal-body">
-                        <form onSubmit={editFunc}>
+                    <div className="modal-body pb-2">
+                        <form>
                             <div className="row">
 
                                 <div className="col-lg-12">
@@ -133,25 +109,10 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                 <div className="col-lg-6">
                                     <div className="mb-3">
                                         <div className="form-floating">
-                                            <select className="form-select w-100"
-                                                id="floatingInput"
-                                                aria-describedby="floatingInputHelp"
-                                                ref={selectRef}
-                                                style={{ height: "58px" }}
-                                                onChange={(e) => selected(e)}
-                                            >
-                                                {
-                                                    category.map((item, index) => {
-                                                        return (
-                                                            <option value={item.id} selected={item.id === data1?.categoryId ? true : false}>
-                                                                {item.name}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
+                                            <input type="text" className="form-control" disabled
+                                                id="floatingInput" aria-describedby="floatingInputHelp"
+                                                value={editModal?.item?.categoryName} />
                                             <label for="floatingInput">Kategoriya</label>
-
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +122,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                value={price} />
+                                                value={editModal?.item?.price} />
                                             <label for="floatingInput">Qiymati</label>
                                         </div>
                                     </div>
@@ -204,8 +165,6 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     )
                                 }
 
@@ -227,31 +186,85 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                     )
                                 }
 
-                                <div className="col-lg-12">
-                                    <div className="mb-3">
-                                        <label for="formFileMultiple" className="form-label">Rasm yuklang</label>
-                                        <input className="form-control" type="file" id="formFileMultiple" multiple={true}
-                                            accept="image/*"
-                                            title='Rasm yuklang'
-                                            onChange={(e) => changeFile(e)} />
-                                    </div>
-                                </div>
+                                {
+                                    data1?.telegramSending === 2 && (
+                                        <div className="col-lg-12">
+                                            <div className="mb-3">
+                                                <div className="form-control">
+                                                    <label className='text-primary'><b>Telegram</b></label> <br />
+                                                    <label for="floatingInput">Ushbu direktor sizdan quyidagi postni rasmiy telegram kanalga chiqarish uchun ruxsat so'rayapti. Siz <b>"Tasdiqlash"/"Bekor qilish"</b> orqali o'z reaksiyangizni bildiring</label>
+                                                    <div className="row">
 
-                                <div className="col-lg-12">
-                                    <button className="btn-lg btn btn-primary w-100"
-                                        type='submit' disabled={data1.status === 0 ? false : true}>
-                                        O'zgartirish
-                                    </button>
+                                                        <div className="col-lg-6">
+                                                            <div className="my-2">
+                                                                <button className="btn-lg btn btn-success w-100"
+                                                                    type='button'
+                                                                    onClick={() => telegramSending(true, data1.id)}>
+                                                                    Tasdiqlash
+                                                                </button>
+                                                            </div>
+                                                        </div>
 
-                                    {
-                                        data1.status !== 0 && (
-                                            <h4 className="modal-title text-center text-danger mt-3">
-                                                Siz ushbu postga reaksiya bildirgansiz. <br /> Shu sababli, uni o'zgartira olmaysiz!
-                                            </h4>
-                                        )
-                                    }
+                                                        <div className="col-lg-6">
+                                                            <div className="my-2">
+                                                                <button className="btn-lg btn btn-danger w-100"
+                                                                    type='button'
+                                                                    onClick={() => telegramSending(false, data1.id)}>
+                                                                    Bekor qilish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    )
+                                }
+
+                                {
+                                    data1?.webSending === 2 && (
+                                        <div className="col-lg-12">
+                                            <div className="mb-3">
+                                                <div className="form-control">
+                                                    <label className='text-primary'><b>Web sayt</b></label> <br />
+                                                    <label for="floatingInput">Ushbu direktor sizdan quyidagi postni rasmiy web saytga chiqarish uchun ruxsat so'rayapti. Siz <b>"Tasdiqlash"/"Bekor qilish"</b> orqali o'z reaksiyangizni bildiring</label>
+                                                    <div className="row">
+
+                                                        <div className="col-lg-6">
+                                                            <div className="my-2">
+                                                                <button className="btn-lg btn btn-success w-100"
+                                                                    type='button'
+                                                                    onClick={() => webSending(true, data1.id)}>
+                                                                    Tasdiqlash
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-lg-6">
+                                                            <div className="my-2">
+                                                                <button className="btn-lg btn btn-danger w-100"
+                                                                    type='button'
+                                                                    onClick={() => webSending(false, data1.id)}>
+                                                                    Bekor qilish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    )
+                                }
 
                             </div>
                         </form>

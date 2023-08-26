@@ -13,7 +13,7 @@ export default function AlertContent({ alert }) {
             <Wrapper>
                 <div class={`alert alert-${alert.color} alert-dismissible`} role="alert">
                     {alert.text}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </Wrapper>
         )

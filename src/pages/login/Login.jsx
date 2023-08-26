@@ -20,17 +20,27 @@ function Login() {
                 // localStorage.setItem("user", JSON.stringify(jwt_decode(res.data.access_token)))
                 console.log(res.data);
                 localStorage.setItem("user", JSON.stringify(res.data));
-                navigate("/unread")
+                if (res.data?.role === "admin") {
+                    navigate("/admin-unread")
+                } else {
+                    if (res.data?.role === "classleader") {
+                        navigate("/student")
+                    } else {
+                        if (res.data?.role === "director") {
+                            navigate("/unread")
+                        }
+                    }
+                }
             }).catch((err) => {
                 Alert(setAlert, "danger", "login yoki parolda xatolik");
             })
     }
 
     return (
-        <div class="p-0">
+        <div className="p-0">
             <div className="authentication-wrapper authentication-basic container-p-y">
                 <div className="authentication-inner">
-                    <div className="card" style={{position: "absolute",width: "40%", margin: "0 auto", top: "50%", left:"50%", transform: "translate(-50%, -50%)"}}>
+                    <div className="card" style={{ position: "absolute", width: "40%", margin: "0 auto", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
                         <div className="card-body">
                             {/* <div className="app-brand justify-content-center pb-0 mb-2">
                                 <img src="../assets/img/logo.png" alt="" height={"150px"} />

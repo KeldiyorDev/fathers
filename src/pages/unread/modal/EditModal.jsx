@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react'
 import axiosInstance from '../../../utils/config';
 import { useEffect } from 'react';
 
-function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, posts, setPosts, retingModal }) {
+function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) {
     const name = useRef()
     const title = useRef()
     const izoh = useRef()
     const selectRef = useRef()
-    const [select, setSelect] = useState(0)
-    const [price, setPrice] = useState(editModal?.item?.price)
     const [file, setFile] = useState([])
+    const [telegram, setTelegram] = useState(false)
+    const [web, setWeb] = useState(false)
 
     console.log(editModal);
 
@@ -33,35 +33,6 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
             })
     }, [editModal?.item?.id])
 
-    const editFunc = (e) => {
-        e.preventDefault()
-        console.log({
-            name: name.current.value,
-            title: title.current.value,
-            message: izoh.current.value,
-            userId: data?.[0]?.id,
-            categoryId: Number(selectRef?.current?.value),
-            id: editModal?.item?.id,
-        })
-        axiosInstance.put(`/Posts/Update?postid=${editModal.item.id}`, {
-            name: name.current.value,
-            title: title.current.value,
-            message: izoh.current.value,
-            userId: data?.[0]?.id,
-            categoryId: Number(selectRef?.current?.value),
-            // id: editModal?.item?.id,
-        }).then((res) => {
-            Alert(setAlert, "success", "Muvafaqqiyatli o'zgartirildi!");
-
-            axiosInstance.get(`/Posts/GetByUser?userid=${retingModal?.item?.id}`)
-                .then((res) => {
-                    setPosts(res.data.elements);
-                    console.log(res.data);
-                })
-            setEditModal({ isShow: false, item: {} })
-        })
-    }
-
     const changeFile = (e) => {
         // let img = new Image()
         // img.src = window.URL.createObjectURL(e.target.files)
@@ -69,15 +40,46 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
         console.log(e.target.files);
     }
 
-    const selected = (e) => {
-        setSelect(e?.target.value)
+    const cancelFunc = () => {
+        axiosInstance.get(`/Posts/Cancel?postid=${editModal?.item?.id}`)
+            .then((res) => {
+                Alert(setAlert, "info", "Post bekor qilindi!");
 
-        category?.forEach((item) => {
-            if (item.id === Number(e?.target.value)) {
-                setPrice(item.value);
-                console.log(item.value);
-            }
-        })
+                axiosInstance.get(`/Posts/GetPosts?isseen=false&page=1&limit=10`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
+                setEditModal({ isShow: false, item: {} })
+            })
+    }
+
+    const deleteFunc = () => {
+        axiosInstance.delete(`/Posts/Delete?postid=${editModal?.item?.id}`)
+            .then((res) => {
+                Alert(setAlert, "danger", "Post o'chirildi!");
+
+                axiosInstance.get(`/Posts/GetPosts?isseen=false&page=1&limit=10`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
+                setEditModal({ isShow: false, item: {} })
+            })
+    }
+
+    const accessFunc = () => {
+        axiosInstance.get(`/Posts/Access?postid=${editModal?.item?.id}&telegram_bot=${telegram}&web=${web}`)
+            .then((res) => {
+                Alert(setAlert, "success", "Post tasdiqlandi!");
+
+                axiosInstance.get(`/Posts/GetPosts?isseen=false&page=1&limit=10`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
+                setEditModal({ isShow: false, item: {} })
+            })
     }
 
     return (
@@ -85,12 +87,12 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
             <div className="modal-dialog-centered" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="modal-content" >
                     <div className="modal-header bg-primary py-3">
-                        <h5 className="modal-title text-white">Postni tahrirlash</h5>
+                        <h5 className="modal-title text-white">Postni ko'rish</h5>
                         <button type="button" className="btn-close"
                             onClick={() => setEditModal({ isShow: false, item: {} })}></button>
                     </div>
-                    <div className="modal-body">
-                        <form onSubmit={editFunc}>
+                    <div className="modal-body pb-2">
+                        <form>
                             <div className="row">
 
                                 <div className="col-lg-12">
@@ -133,25 +135,10 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                 <div className="col-lg-6">
                                     <div className="mb-3">
                                         <div className="form-floating">
-                                            <select className="form-select w-100"
-                                                id="floatingInput"
-                                                aria-describedby="floatingInputHelp"
-                                                ref={selectRef}
-                                                style={{ height: "58px" }}
-                                                onChange={(e) => selected(e)}
-                                            >
-                                                {
-                                                    category.map((item, index) => {
-                                                        return (
-                                                            <option value={item.id} selected={item.id === data1?.categoryId ? true : false}>
-                                                                {item.name}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
+                                            <input type="text" className="form-control" disabled
+                                                id="floatingInput" aria-describedby="floatingInputHelp"
+                                                value={editModal?.item?.categoryName} />
                                             <label for="floatingInput">Kategoriya</label>
-
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +148,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                value={price} />
+                                                value={editModal?.item?.price} />
                                             <label for="floatingInput">Qiymati</label>
                                         </div>
                                     </div>
@@ -227,6 +214,30 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                     )
                                 }
 
+                                <div className="col-lg-6">
+                                    <div className="mb-3">
+                                        <div class="form-check form-check-lg">
+                                            <input class="form-check-input" type="checkbox"
+                                                id="defaultCheck3" checked={telegram}
+                                                defaultChecked={editModal?.item?.telegramSending}
+                                                onChange={() => setTelegram(!telegram)} />
+                                            <label class="form-check-label" for="defaultCheck3"> Telegram kanalga e'lon berish uchun ruxsat so'rash</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-lg-6">
+                                    <div className="mb-3">
+                                        <div class="form-check form-check-lg">
+                                            <input class="form-check-input" type="checkbox"
+                                                value="" id="defaultCheck4" checked={web}
+                                                defaultChecked={editModal?.item?.web}
+                                                onChange={() => setWeb(!web)} />
+                                            <label class="form-check-label" for="defaultCheck4"> Websaytga e'lon berish uchun ruxsat so'rash</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label for="formFileMultiple" className="form-label">Rasm yuklang</label>
@@ -237,20 +248,34 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                     </div>
                                 </div>
 
-                                <div className="col-lg-12">
-                                    <button className="btn-lg btn btn-primary w-100"
-                                        type='submit' disabled={data1.status === 0 ? false : true}>
-                                        O'zgartirish
-                                    </button>
+                                <div className="col-lg-4">
+                                    <div className="mb-3">
+                                        <button className="btn-lg btn btn-success w-100"
+                                            type='button'
+                                            onClick={() => accessFunc()}>
+                                            Tasdiqlash
+                                        </button>
+                                    </div>
+                                </div>
 
-                                    {
-                                        data1.status !== 0 && (
-                                            <h4 className="modal-title text-center text-danger mt-3">
-                                                Siz ushbu postga reaksiya bildirgansiz. <br /> Shu sababli, uni o'zgartira olmaysiz!
-                                            </h4>
-                                        )
-                                    }
+                                <div className="col-lg-4">
+                                    <div className="mb-3">
+                                        <button className="btn-lg btn btn-danger w-100"
+                                            type='button'
+                                            onClick={() => deleteFunc()}>
+                                            O'chirish
+                                        </button>
+                                    </div>
+                                </div>
 
+                                <div className="col-lg-4">
+                                    <div className="mb-3">
+                                        <button className="btn-lg btn btn-info w-100"
+                                            type='button'
+                                            onClick={() => cancelFunc()}>
+                                            Bekor qilish
+                                        </button>
+                                    </div>
                                 </div>
 
                             </div>

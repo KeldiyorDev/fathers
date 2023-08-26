@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import axiosInstance from '../../utils/config';
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import AlertContent, { Alert } from '../../components/Alert';
 import DeleteModal from './modal/DeleteModal';
 import EditModal from './modal/EditModal';
 import AddModal from './modal/AddModal';
-import { Link } from 'react-router-dom';
-import AddReting from './modal/AddReting';
-import Reting from './modal/Reting';
 
-function Student() {
+function ClassPosts() {
     const [alert, setAlert] = useState({ open: false, color: "", text: "" });
 
     const [addModal, setAddModal] = useState(false)
-    const [addReting, setAddReting] = useState({ isShow: false, item: {} })
-    const [retingModal, setRetingModal] = useState({ isShow: false, item: {} })
     const [editModal, setEditModal] = useState({ isShow: false, item: {} })
     const [deleteModal, setDeleteModal] = useState({ isShow: false, id: 0 })
 
@@ -23,26 +18,29 @@ function Student() {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        axiosInstance.get(`/classes/Users/GetAll`)
+        axiosInstance.get(`/Posts/GetClassPosts?limit=10&page=1`)
             .then((res) => {
                 setData(res.data.elements);
                 console.log(res.data);
             })
     }, [])
 
+    // localStorage.setItem("posts", JSON.stringify(data));
+
+    // useEffect(() => {
+    //     axiosInstance.get(`/tumanxtb/Categories/GetAll`)
+    //         .then((res) => {
+    //             setData(res.data.elements);
+    //             console.log(res.data);
+    //         })
+    // }, [])
+
     return (
         <Wrapper>
             <div className="card">
                 <div className="card-header">
                     <div className="d-sm-flex align-items-center justify-content-between">
-                        <h2 className="mb-sm-0 font-size-24">O'quvchilar ro'yxati</h2>
-
-                        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                            <button className="btn btn-primary btn-lg"
-                                onClick={() => setAddModal(true)}>
-                                Yangi qo'shish
-                            </button>
-                        </div>
+                        <h2 className="mb-sm-0 font-size-24">Postlar</h2>
                     </div>
                 </div>
 
@@ -51,9 +49,12 @@ function Student() {
                         <thead>
                             <tr className='text-center'>
                                 <th>№</th>
-                                <th>Ism familiyasi</th>
-                                <th>Otasining ism familiyasi</th>
-                                <th>To'plagan bali</th>
+                                <th>Otasining ismi</th>
+                                <th>Nomi</th>
+                                <th>Kategoriya nomi</th>
+                                <th>Qiymati</th>
+                                <th>Qo'shilgan sanasi</th>
+                                <th>Status</th>
                                 <th>Amallar</th>
                             </tr>
                         </thead>
@@ -61,14 +62,24 @@ function Student() {
                             {
                                 data?.length > 0 && data?.map((item, index) => {
                                     return (
-                                        <tr className='text-center table-light' key={index}>
+                                        <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-success" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
                                             <th>{index + 1}</th>
-                                            <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td>
-                                            <td>{item.fathersName}</td>
-                                            <td>{index % 2 === 1 ? "60" : "80"}</td>
+                                            <th>{item?.fathersName}</th>
+                                            {/* <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td> */}
+                                            <td>{item.name}</td>
+                                            <td>{item.categoryName}</td>
+                                            <td>{item.price}</td>
+                                            <td>{item.dateTime?.substr(0, 10)?.split("-")?.reverse().join(".")}</td>
+                                            <td>{item.description}</td>
                                             <td className="text-center">
-                                                <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }} onClick={() => setEditModal({ isShow: true, item: item })} />
-                                                <AiFillDelete fontSize={"24px"} cursor={"pointer"} color='#ff3e1d' onClick={() => setDeleteModal({ isShow: true, id: item.id })} />
+                                                <AiFillEye fontSize={"24px"} cursor={"pointer"} color='#696cff' style={{ margin: "0 8px" }}
+                                                    onClick={() => setEditModal({ isShow: true, item: item })}
+                                                />
+
+                                                {/* <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }}
+                                                        onClick={() => setEditModal({ isShow: true, item: item })}
+                                                    /> */}
+
                                             </td>
                                         </tr>
                                     )
@@ -119,39 +130,13 @@ function Student() {
                 )
             }
 
-            {
-                addReting.isShow && (
-                    <AddReting
-                        data={data}
-                        setData={setData}
-                        addReting={addReting}
-                        setAddReting={setAddReting}
-                        Alert={Alert}
-                        setAlert={setAlert}
-                    />
-                )
-            }
-
-            {
-                retingModal.isShow && (
-                    <Reting
-                        data={data}
-                        setData={setData}
-                        retingModal={retingModal}
-                        setRetingModal={setRetingModal}
-                        Alert={Alert}
-                        setAlert={setAlert}
-                    />
-                )
-            }
-
             {/* alert */}
             <AlertContent alert={alert} />
         </Wrapper>
     )
 }
 
-export default Student
+export default ClassPosts
 
 const Wrapper = styled.section`
     

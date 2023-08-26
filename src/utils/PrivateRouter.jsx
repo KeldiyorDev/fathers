@@ -7,10 +7,10 @@ function PrivateRouter({ children }) {
 	const user = JSON.parse(localStorage.getItem('user'));
 
 	useEffect(() => {
-		if (!user.token) {
+		if (!user?.token) {
 			return navigate('/');
 		}
-	}, [user.token, navigate, children]);
+	}, [user?.token, navigate, children]);
 
 	return children;
 }
