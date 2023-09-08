@@ -1,6 +1,11 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { BiWorld } from "react-icons/bi";
+import { BiSolidCategory, BiWorld } from "react-icons/bi";
+import { IoMdMailUnread } from "react-icons/io";
+import { MdMarkunread, MdSchool } from "react-icons/md";
+import { FaSchool } from "react-icons/fa";
+import { PiStudentFill } from "react-icons/pi";
+import { BsPostcardFill } from 'react-icons/bs';
 
 function Aside() {
     const { pathname } = useLocation()
@@ -29,7 +34,7 @@ function Aside() {
                     (user?.role === "director") && (
                         <li className={`my-1 menu-item ${pathname === "/unread" && "active"}`}>
                             <Link to="/unread" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <IoMdMailUnread fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">O'qilmagan postlar</div>
                             </Link>
                         </li>
@@ -40,7 +45,7 @@ function Aside() {
                     (user?.role === "admin") && (
                         <li className={`my-1 menu-item ${pathname === "/admin-unread" && "active"}`}>
                             <Link to="/admin-unread" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <IoMdMailUnread fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">O'qilmagan postlar</div>
                             </Link>
                         </li>
@@ -51,7 +56,7 @@ function Aside() {
                     (user?.role === "admin") && (
                         <li className={`my-1 menu-item ${pathname === "/posts" && "active"}`}>
                             <Link to="/posts" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <MdMarkunread fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Barcha postlar</div>
                             </Link>
                         </li>
@@ -61,7 +66,7 @@ function Aside() {
                     (user?.role === "director") && (
                         <li className={`my-1 menu-item ${pathname === "/director-posts" && "active"}`}>
                             <Link to="/director-posts" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <MdMarkunread fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Barcha postlar</div>
                             </Link>
                         </li>
@@ -71,7 +76,7 @@ function Aside() {
                     user?.role === "admin" && (
                         <li className={`my-1 menu-item ${pathname === "/schools" && "active"}`}>
                             <Link to="/schools" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <FaSchool fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Maktablar</div>
                             </Link>
                         </li>
@@ -81,7 +86,7 @@ function Aside() {
                     user?.role === "admin" && (
                         <li className={`my-1 menu-item ${pathname === "/category" && "active"}`}>
                             <Link to="/category" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <BiSolidCategory fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Kategoriyalar</div>
                             </Link>
                         </li>
@@ -91,7 +96,7 @@ function Aside() {
                     user?.role === "director" && (
                         <li className={`my-1 menu-item ${pathname === "/classes" && "active"}`}>
                             <Link to="/classes" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <MdSchool fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Sinflar</div>
                             </Link>
                         </li>
@@ -101,7 +106,7 @@ function Aside() {
                     user?.role === "classleader" && (
                         <li className={`my-1 menu-item ${pathname === "/student" && "active"}`}>
                             <Link to="/student" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <PiStudentFill fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">O'quvchilar</div>
                             </Link>
                         </li>
@@ -111,7 +116,7 @@ function Aside() {
                     user?.role === "classleader" && (
                         <li className={`my-1 menu-item ${pathname === "/class-posts" && "active"}`}>
                             <Link to="/class-posts" className="menu-link">
-                                <BiWorld fontSize={"18px"} className='me-2' />
+                                <MdMarkunread fontSize={"18px"} className='me-2' />
                                 <div data-i18n="Analytics">Postlar</div>
                             </Link>
                         </li>

@@ -56,7 +56,7 @@ function Login() {
                                         id="email"
                                         name="email-username"
                                         placeholder="loginni kiriting"
-                                        autofocus
+                                        // autofocus
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">

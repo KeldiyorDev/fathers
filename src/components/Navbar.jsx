@@ -24,7 +24,7 @@ function Navbar() {
 
         <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
           <div className="navbar-nav align-items-center">
-            <div className="nav-item d-flex align-items-center">
+            {/* <div className="nav-item d-flex align-items-center">
               <i className="bx bx-search fs-4 lh-0"></i>
               <input
                 type="text"
@@ -33,6 +33,34 @@ function Navbar() {
                 placeholder="Qidiruv."
                 aria-label="Search..."
               />
+            </div> */}
+            <div className="flex-grow-1">
+              {
+                user?.role === `admin` && (
+                  <>
+                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.mudir}</span>
+                    <small className="text-muted" style={{fontSize: "16px"}}>Mudir (G'ijduvon tumani)</small>
+                  </>
+                )
+              }
+
+              {
+                user?.role === `director` && (
+                  <>
+                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.director}</span>
+                    <small className="text-muted" style={{fontSize: "16px"}}>Direktor ({user?.name})</small>
+                  </>
+                )
+              }
+
+              {
+                user?.role === `classleader` && (
+                  <>
+                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.leaderName}</span>
+                    <small className="text-muted" style={{fontSize: "16px"}}> Sinf rahbar ({user?.name})</small>
+                  </>
+                )
+              }
             </div>
           </div>
 
@@ -71,7 +99,7 @@ function Navbar() {
                           )
                         }
 
-{
+                        {
                           user?.role === `classleader` && (
                             <>
                               <span className="fw-semibold d-block">{user?.leaderName}</span>

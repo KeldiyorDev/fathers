@@ -250,7 +250,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                                 {
                                                     category.map((item, index) => {
                                                         return (
-                                                            <option value={item.id} selected={item.id === data1?.categoryId ? true : false}>
+                                                            <option key={index} value={item.id} selected={item.id === data1?.categoryId ? true : false}>
                                                                 {item.name}
                                                             </option>
                                                         )

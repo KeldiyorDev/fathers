@@ -222,24 +222,24 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
 
                                 <div className="col-lg-6">
                                     <div className="mb-3">
-                                        <div class="form-check form-check-lg">
-                                            <input class="form-check-input" type="checkbox"
+                                        <div className="form-check form-check-lg">
+                                            <input className="form-check-input" type="checkbox"
                                                 id="defaultCheck3" checked={telegram}
                                                 defaultChecked={editModal?.item?.telegramSending}
                                                 onChange={() => setTelegram(!telegram)} />
-                                            <label class="form-check-label" for="defaultCheck3"> Telegram kanalga e'lon berish uchun ruxsat so'rash</label>
+                                            <label className="form-check-label" for="defaultCheck3"> Telegram kanalga e'lon berish uchun ruxsat so'rash</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-6">
                                     <div className="mb-3">
-                                        <div class="form-check form-check-lg">
-                                            <input class="form-check-input" type="checkbox"
+                                        <div className="form-check form-check-lg">
+                                            <input className="form-check-input" type="checkbox"
                                                 value="" id="defaultCheck4" checked={web}
                                                 defaultChecked={editModal?.item?.web}
                                                 onChange={() => setWeb(!web)} />
-                                            <label class="form-check-label" for="defaultCheck4"> Websaytga e'lon berish uchun ruxsat so'rash</label>
+                                            <label className="form-check-label" for="defaultCheck4"> Websaytga e'lon berish uchun ruxsat so'rash</label>
                                         </div>
                                     </div>
                                 </div>

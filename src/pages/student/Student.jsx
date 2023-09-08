@@ -19,7 +19,6 @@ function Student() {
     const [editModal, setEditModal] = useState({ isShow: false, item: {} })
     const [deleteModal, setDeleteModal] = useState({ isShow: false, id: 0 })
 
-
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -65,7 +64,7 @@ function Student() {
                                             <th>{index + 1}</th>
                                             <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td>
                                             <td>{item.fathersName}</td>
-                                            <td>{index % 2 === 1 ? "60" : "80"}</td>
+                                            <td>{item?.rating}</td>
                                             <td className="text-center">
                                                 <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }} onClick={() => setEditModal({ isShow: true, item: item })} />
                                                 <AiFillDelete fontSize={"24px"} cursor={"pointer"} color='#ff3e1d' onClick={() => setDeleteModal({ isShow: true, id: item.id })} />

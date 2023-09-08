@@ -49,3 +49,13 @@
 .modal-body {
   overflow-x: auto;
 }
+
+.modal {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.modal::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}

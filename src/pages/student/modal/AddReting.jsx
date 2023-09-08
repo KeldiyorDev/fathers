@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Alert, setAlert, retingModal }) {
+    console.log(data);
     const name = useRef()
     const title = useRef()
     const izoh = useRef()
@@ -34,9 +35,8 @@ function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Al
             name: name.current.value,
             title: title.current.value,
             message: izoh.current.value,
-            userId: data?.[0]?.id,
+            userId: retingModal?.item?.id,
             categoryId: Number(selectRef?.current?.value),
-            id: retingModal?.item?.id,
             base64String: base64Strings
         })
 
@@ -47,7 +47,7 @@ function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Al
                     name: name.current.value,
                     title: title.current.value,
                     message: izoh.current.value,
-                    userId: data?.[0]?.id,
+                    userId: retingModal?.item?.id,
                     categoryId: Number(selectRef?.current?.value),
                     imageIds: res.data
                 }).then((res) => {
@@ -203,7 +203,7 @@ function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Al
                                                 {
                                                     category.map((item, index) => {
                                                         return (
-                                                            <option value={item.id}>
+                                                            <option value={item.id} key={index}>
                                                                 {item.name}
                                                             </option>
                                                         )

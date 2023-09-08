@@ -3,6 +3,8 @@ import axiosInstance from '../../../utils/config';
 import { useEffect } from 'react';
 import { styled } from 'styled-components';
 import SeenModal from '../../../components/SeenModal';
+import { AiFillCloseCircle } from 'react-icons/ai';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
 
 function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, schoolId }) {
     const name = useRef()
@@ -35,32 +37,33 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, sc
             })
     }, [editModal?.item?.id])
 
+    const [telegramInfo, setTelegramInfo] = useState({ bool: null, isShow: false })
+
     const telegramSending = (bool, postid) => {
         axiosInstance.get(`/Posts/AccessForTelegramChannel?postid=${postid}&allow=${bool}`)
             .then((res) => {
-                axiosInstance.get(`/Posts/GetSchoolPostsForTXTB?limit=10&page=1&schoolid=${schoolId}`)
-                    .then((res) => {
-                        setData(res.data.elements);
-                        console.log(res.data);
-                    })
-                Alert(setAlert, "info", "Muvaffaqiyatli bajarildi");
-                setEditModal({ isShow: false, item: {} })
+                setTelegramInfo({ bool: bool, isShow: true })
             })
     }
+
+    const [webInfo, setWebInfo] = useState({ bool: null, isShow: false })
 
     const webSending = (bool, postid) => {
         axiosInstance.get(`/Posts/AccessForWebSite?postid=${postid}&allow=${bool}`)
             .then((res) => {
-                axiosInstance.get(`/Posts/GetSchoolPostsForTXTB?limit=10&page=1&schoolid=${schoolId}`)
-                    .then((res) => {
-                        setData(res.data.elements);
-                        console.log(res.data);
-                    })
-
-                Alert(setAlert, "info", "Muvaffaqiyatli bajarildi");
-                setEditModal({ isShow: false, item: {} })
+                setWebInfo({ bool: bool, isShow: true })
             })
     }
+
+    useEffect(() => {
+        const close = (e) => {
+            if (e.keyCode === 27) {
+                setEditModal({ isShow: false, item: {} })
+            }
+        }
+        window.addEventListener('keydown', close)
+        return () => window.removeEventListener('keydown', close)
+    }, [setEditModal])
 
     return (
         <div className="modal">
@@ -231,26 +234,35 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, sc
                                                     <label className='text-primary'><b>Telegram</b></label> <br />
                                                     <label for="floatingInput">Ushbu direktor sizdan quyidagi postni rasmiy telegram kanalga chiqarish uchun ruxsat so'rayapti. Siz <b>"Tasdiqlash"/"Bekor qilish"</b> orqali o'z reaksiyangizni bildiring</label>
                                                     <div className="row">
+                                                        {
+                                                            !telegramInfo.isShow ? (
+                                                                <>
 
-                                                        <div className="col-lg-6">
-                                                            <div className="my-2">
-                                                                <button className="btn-lg btn btn-success w-100"
-                                                                    type='button'
-                                                                    onClick={() => telegramSending(true, data1.id)}>
-                                                                    Tasdiqlash
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                                    <div className="col-lg-6">
+                                                                        <div className="my-2">
+                                                                            <button className="btn-lg btn btn-success w-100"
+                                                                                type='button'
+                                                                                onClick={() => telegramSending(true, data1.id)}>
+                                                                                Tasdiqlash
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
 
-                                                        <div className="col-lg-6">
-                                                            <div className="my-2">
-                                                                <button className="btn-lg btn btn-danger w-100"
-                                                                    type='button'
-                                                                    onClick={() => telegramSending(false, data1.id)}>
-                                                                    Bekor qilish
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                                    <div className="col-lg-6">
+                                                                        <div className="my-2">
+                                                                            <button className="btn-lg btn btn-danger w-100"
+                                                                                type='button'
+                                                                                onClick={() => telegramSending(false, data1.id)}>
+                                                                                Bekor qilish
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                telegramInfo?.bool ? <h3 className='text-success text-center mt-2'><BsFillCheckCircleFill /> Tasdiqlandi.</h3> : <h3 className='text-danger text-center mt-2'><AiFillCloseCircle /> Bekor qilindi.</h3>
+                                                            )
+                                                        }
+
                                                     </div>
 
 
@@ -272,25 +284,31 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, sc
                                                     <label for="floatingInput">Ushbu direktor sizdan quyidagi postni rasmiy web saytga chiqarish uchun ruxsat so'rayapti. Siz <b>"Tasdiqlash"/"Bekor qilish"</b> orqali o'z reaksiyangizni bildiring</label>
                                                     <div className="row">
 
-                                                        <div className="col-lg-6">
-                                                            <div className="my-2">
-                                                                <button className="btn-lg btn btn-success w-100"
-                                                                    type='button'
-                                                                    onClick={() => webSending(true, data1.id)}>
-                                                                    Tasdiqlash
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                        {!webInfo.isShow ? (
+                                                            <>
+                                                                <div className="col-lg-6">
+                                                                    <div className="my-2">
+                                                                        <button className="btn-lg btn btn-success w-100"
+                                                                            type='button'
+                                                                            onClick={() => webSending(true, data1.id)}>
+                                                                            Tasdiqlash
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
 
-                                                        <div className="col-lg-6">
-                                                            <div className="my-2">
-                                                                <button className="btn-lg btn btn-danger w-100"
-                                                                    type='button'
-                                                                    onClick={() => webSending(false, data1.id)}>
-                                                                    Bekor qilish
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                                <div className="col-lg-6">
+                                                                    <div className="my-2">
+                                                                        <button className="btn-lg btn btn-danger w-100"
+                                                                            type='button'
+                                                                            onClick={() => webSending(false, data1.id)}>
+                                                                            Bekor qilish
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            webInfo?.bool ? <h3 className='text-success text-center mt-2'><BsFillCheckCircleFill /> Tasdiqlandi.</h3> : <h3 className='text-danger text-center mt-2'><AiFillCloseCircle /> Bekor qilindi.</h3>
+                                                        )}
                                                     </div>
 
 

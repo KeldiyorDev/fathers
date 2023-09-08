@@ -110,7 +110,7 @@ function AdminUread() {
                   {
                     schools.map((item, index) => {
                       return (
-                        <option value={item.id}>
+                        <option value={item.id}  key={index}>
                           {item.name}
                         </option>
                       )
@@ -224,72 +224,3 @@ const Wrapper = styled.section`
     
 `
 
-
-// {
-//   data?.length > 0 ? (
-//     <>
-//       <table className="table table-primary table-bordered align-middle mb-0 table-striped">
-//         <thead>
-//           <tr className='text-center'>
-//             <th>№</th>
-//             <th>Nomi</th>
-//             <th>Kategoriya nomi</th>
-//             <th>Sinfi</th>
-//             <th>Ismi</th>
-//             <th>Qiymati</th>
-//             <th>Qo'shilgan sanasi</th>
-//             <th>Status</th>
-//             <th>Amallar</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {data?.map((item, index) => {
-//             return (
-//               <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-success" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
-//                 <th>{index + 1}</th>
-//                 {/* <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td> */}
-//                 <td>{item.name}</td>
-//                 <td>{item.categoryName}</td>
-//                 <td>{item?.className}</td>
-//                 <td>{item?.fathersName}</td>
-//                 <td>{item.price}</td>
-//                 <td>{item.dateTime?.substr(0, 10)?.split("-")?.reverse().join(".")}</td>
-//                 <td>{item.description}</td>
-//                 <td className="text-center">
-//                   <AiFillEye fontSize={"24px"} cursor={"pointer"} color='#696cff' style={{ margin: "0 8px" }}
-//                     onClick={() => setEditModal({ isShow: true, item: item })}
-//                   />
-
-//                   {/* <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }}
-//                                               onClick={() => setEditModal({ isShow: true, item: item })}
-//                                           /> */}
-
-//                 </td>
-//               </tr>
-//             )
-//           })
-//           }
-
-//         </tbody>
-//       </table>
-
-//       <div className="col-lg-12 mt-2">
-//         <Pagination
-//           page={page}
-//           limit={limit}
-//           elements={elements}
-//           handlePageClick={handlePageClick}
-//         />
-//       </div>
-//     </>
-//   ) : (
-//     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "16px" }} >
-//       <img src="/assets/img/search.png" alt=""
-//         style={{ width: "200px" }} />
-//       <h2 className="mb-sm-0 font-size-24 text-primary"
-//       // style={{color: "#98ACF8"}}
-//       >O'qilmagan postlar yo'q</h2>
-
-//     </div>
-//   )
-// }
