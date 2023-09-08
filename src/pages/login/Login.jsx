@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AlertContent, { Alert } from '../../components/Alert';
 import { url } from '../../utils/config';
+import styled from 'styled-components';
 
 function Login() {
     const [alert, setAlert] = useState({ open: false, color: "", text: "" });
@@ -37,7 +38,7 @@ function Login() {
     }
 
     return (
-        <div className="p-0">
+        <Wrapper className="p-0">
             <div className="authentication-wrapper authentication-basic container-p-y">
                 <div className="authentication-inner">
                     <div className="card" style={{ position: "absolute", width: "40%", margin: "0 auto", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
@@ -56,7 +57,7 @@ function Login() {
                                         id="email"
                                         name="email-username"
                                         placeholder="loginni kiriting"
-                                        // autofocus
+                                    // autofocus
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">
@@ -103,8 +104,16 @@ function Login() {
 
             {/* alert */}
             <AlertContent alert={alert} />
-        </div>
+        </Wrapper>
     )
 }
 
 export default Login
+
+const Wrapper = styled.div`
+    @media(max-width:768px) {
+        .card {
+            width: 80% !important;
+        }
+    }
+`

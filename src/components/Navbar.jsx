@@ -1,7 +1,8 @@
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-function Navbar() {
+function Navbar({showAside, setShowAside}) {
   const inputRef = useRef(null);
 
   const deleteFunc = () => {
@@ -11,15 +12,15 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"))
 
   return (
-    <>
+    <Wrapper>
       <nav
         className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
         id="layout-navbar"
       >
         <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-          {/* <a className="nav-item nav-link px-0 me-xl-4" href="/">
-          <i className="bx bx-menu bx-sm"></i>
-        </a> */}
+          <div className="nav-item nav-link px-0 me-xl-4">
+            <i className="bx bx-menu bx-sm" onClick={() => {setShowAside(true)}}></i>
+          </div>
         </div>
 
         <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
@@ -38,8 +39,8 @@ function Navbar() {
               {
                 user?.role === `admin` && (
                   <>
-                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.mudir}</span>
-                    <small className="text-muted" style={{fontSize: "16px"}}>Mudir (G'ijduvon tumani)</small>
+                    <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.mudir}</span>
+                    <small className="text-muted" style={{ fontSize: "16px" }}>Mudir (G'ijduvon tumani)</small>
                   </>
                 )
               }
@@ -47,8 +48,8 @@ function Navbar() {
               {
                 user?.role === `director` && (
                   <>
-                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.director}</span>
-                    <small className="text-muted" style={{fontSize: "16px"}}>Direktor ({user?.name})</small>
+                    <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.director}</span>
+                    <small className="text-muted" style={{ fontSize: "16px" }}>Direktor ({user?.name})</small>
                   </>
                 )
               }
@@ -56,8 +57,8 @@ function Navbar() {
               {
                 user?.role === `classleader` && (
                   <>
-                    <span className="fw-semibold d-block" style={{fontSize: "18px"}}>{user?.leaderName}</span>
-                    <small className="text-muted" style={{fontSize: "16px"}}> Sinf rahbar ({user?.name})</small>
+                    <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.leaderName}</span>
+                    <small className="text-muted" style={{ fontSize: "16px" }}> Sinf rahbar ({user?.name})</small>
                   </>
                 )
               }
@@ -140,10 +141,14 @@ function Navbar() {
           </ul>
         </div>
       </nav>
-    </>
+    </Wrapper>
 
 
   )
 }
 
 export default Navbar
+
+const Wrapper = styled.div`
+  
+`
