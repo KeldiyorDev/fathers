@@ -59,3 +59,7 @@
   width: 0;
   height: 0;
 }
+
+.layout-page {
+  padding-left: 0 !important;
+}

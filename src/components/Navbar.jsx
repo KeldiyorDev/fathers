@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Navbar({showAside, setShowAside}) {
+function Navbar({ showAside, setShowAside }) {
   const inputRef = useRef(null);
 
   const deleteFunc = () => {
@@ -19,7 +19,7 @@ function Navbar({showAside, setShowAside}) {
       >
         <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
           <div className="nav-item nav-link px-0 me-xl-4">
-            <i className="bx bx-menu bx-sm" onClick={() => {setShowAside(true)}}></i>
+            <i className="bx bx-menu bx-sm" onClick={() => setShowAside(!showAside)}></i>
           </div>
         </div>
 
@@ -35,7 +35,7 @@ function Navbar({showAside, setShowAside}) {
                 aria-label="Search..."
               />
             </div> */}
-            <div className="flex-grow-1">
+            <div className="flex-grow-1 user">
               {
                 user?.role === `admin` && (
                   <>
@@ -150,5 +150,9 @@ function Navbar({showAside, setShowAside}) {
 export default Navbar
 
 const Wrapper = styled.div`
-  
+  @media(max-width: 992px) {
+        .user {
+            display: none;
+        }
+    }
 `
