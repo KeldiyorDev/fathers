@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import { useState } from 'react';
 
 const Layout = ({ children }) => {
-    const [showAside, setShowAside] = useState(false)
+    const [showAside, setShowAside] = useState(true)
     return (
         <div className="layout-wrapper layout-content-navbar">
             <div className="layout-container">
