@@ -40,7 +40,7 @@ function Navbar({ showAside, setShowAside }) {
                 user?.role === `admin` && (
                   <>
                     <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.mudir}</span>
-                    <small className="text-muted" style={{ fontSize: "16px" }}>Mudir (G'ijduvon tumani)</small>
+                    <small className="text-muted" style={{ fontSize: "16px" }}>Tuman XTB rahbari(G'ijduvon tumani)</small>
                   </>
                 )
               }
@@ -49,7 +49,7 @@ function Navbar({ showAside, setShowAside }) {
                 user?.role === `director` && (
                   <>
                     <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.director}</span>
-                    <small className="text-muted" style={{ fontSize: "16px" }}>Direktor ({user?.name})</small>
+                    <small className="text-muted" style={{ fontSize: "16px" }}>Direktor({user?.name})</small>
                   </>
                 )
               }
@@ -58,7 +58,7 @@ function Navbar({ showAside, setShowAside }) {
                 user?.role === `classleader` && (
                   <>
                     <span className="fw-semibold d-block" style={{ fontSize: "18px" }}>{user?.leaderName}</span>
-                    <small className="text-muted" style={{ fontSize: "16px" }}> Sinf rahbar ({user?.name})</small>
+                    <small className="text-muted" style={{ fontSize: "16px" }}> Sinf rahbar({user?.name})</small>
                   </>
                 )
               }
@@ -86,7 +86,7 @@ function Navbar({ showAside, setShowAside }) {
                           user?.role === `admin` && (
                             <>
                               <span className="fw-semibold d-block">{user?.mudir}</span>
-                              <small className="text-muted">Mudir (G'ijduvon tumani)</small>
+                              <small className="text-muted">Tuman XTB rahbari(G'ijduvon tumani)</small>
                             </>
                           )
                         }
@@ -95,7 +95,7 @@ function Navbar({ showAside, setShowAside }) {
                           user?.role === `director` && (
                             <>
                               <span className="fw-semibold d-block">{user?.director}</span>
-                              <small className="text-muted">Direktor ({user?.name})</small>
+                              <small className="text-muted">Direktor({user?.name})</small>
                             </>
                           )
                         }
@@ -104,7 +104,7 @@ function Navbar({ showAside, setShowAside }) {
                           user?.role === `classleader` && (
                             <>
                               <span className="fw-semibold d-block">{user?.leaderName}</span>
-                              <small className="text-muted"> Sinf rahbar ({user?.name})</small>
+                              <small className="text-muted"> Sinf rahbar({user?.name})</small>
                             </>
                           )
                         }

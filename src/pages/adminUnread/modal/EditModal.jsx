@@ -115,24 +115,24 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, sc
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-9">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={editModal?.item?.categoryName} />
-                                            <label for="floatingInput">Kategoriya</label>
+                                            <label for="floatingInput">Baholash me`zoni</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-3">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={editModal?.item?.price} />
-                                            <label for="floatingInput">Qiymati</label>
+                                            <label for="floatingInput">Ball</label>
                                         </div>
                                     </div>
                                 </div>

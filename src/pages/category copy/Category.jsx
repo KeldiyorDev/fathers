@@ -60,7 +60,7 @@ function Category() {
             <div className="card">
                 <div className="card-header">
                     <div className="d-sm-flex align-items-center justify-content-between">
-                        <h2 className="mb-sm-0 font-size-24">Kategoriyalar</h2>
+                        <h2 className="mb-sm-0 font-size-24">Baholash me`zonlari</h2>
 
                         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                             <button className="btn btn-primary btn-lg"
@@ -76,8 +76,8 @@ function Category() {
                         <thead>
                             <tr className='text-center'>
                                 <th>№</th>
-                                <th>Nomi</th>
-                                <th>Qiymati</th>
+                                <th>Baholash me`zoni</th>
+                                <th>Ball</th>
                                 <th>Amallar</th>
                             </tr>
                         </thead>

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { styled } from 'styled-components';
 import SeenModal from '../../../components/SeenModal';
 
-function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) {
+function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, page, setPage }) {
     const name = useRef()
     const title = useRef()
     const izoh = useRef()
@@ -51,7 +51,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             .then((res) => {
                 Alert(setAlert, "info", "Post bekor qilindi!");
 
-                axiosInstance.get(`/Posts/GetPosts?limit=10&page=1&isseen=true`)
+                axiosInstance.get(`/Posts/GetPosts?limit=10&page=${page}&isseen=true`)
                     .then((res) => {
                         setData(res.data.elements);
                         console.log(res.data);
@@ -65,7 +65,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             .then((res) => {
                 Alert(setAlert, "danger", "Post o'chirildi!");
 
-                axiosInstance.get(`/Posts/GetPosts?limit=10&page=1&isseen=true`)
+                axiosInstance.get(`/Posts/GetPosts?limit=10&page=${page}&isseen=true`)
                     .then((res) => {
                         setData(res.data.elements);
                         console.log(res.data);
@@ -79,7 +79,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             .then((res) => {
                 Alert(setAlert, "success", "Post tasdiqlandi!");
 
-                axiosInstance.get(`/Posts/GetPosts?limit=10&page=1&isseen=true`)
+                axiosInstance.get(`/Posts/GetPosts?limit=10&page=${page}&isseen=true`)
                     .then((res) => {
                         setData(res.data.elements);
                         console.log(res.data);
@@ -106,7 +106,9 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                         <div className="form-floating">
                                             <input type="text" className="form-control" ref={name}
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                defaultValue={data1?.name} maxLength={50} />
+                                                defaultValue={data1?.name} maxLength={50} 
+                                                disabled={data1.status!== 0}
+                                                />
                                             <label for="floatingInput">Nomi</label>
                                         </div>
                                     </div>
@@ -117,7 +119,9 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                         <div className="form-floating">
                                             <input type="text" className="form-control" ref={title}
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                defaultValue={data1?.title} maxLength={100} />
+                                                defaultValue={data1?.title} maxLength={100} 
+                                                disabled={data1.status!== 0}
+                                                />
                                             <label for="floatingInput">Sarlavha</label>
                                         </div>
                                     </div>
@@ -130,6 +134,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                                 ref={izoh} type="text"
                                                 aria-describedby="floatingInputHelp"
                                                 id="floatingInput2"
+                                                disabled={data1.status!== 0}
                                                 defaultValue={data1?.message}
                                                 maxLength={5000} />
                                             <label for="floatingInput2">Izoh</label>
@@ -138,24 +143,24 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-9">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={editModal?.item?.categoryName} />
-                                            <label for="floatingInput">Kategoriya</label>
+                                            <label for="floatingInput">Baholash me`zoni</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-3">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={editModal?.item?.price} />
-                                            <label for="floatingInput">Qiymati</label>
+                                            <label for="floatingInput">Ball</label>
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +197,9 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                                         style={{ color: data1?.telegramSending === 1 ? "" : data1?.telegramSending === 2 ? "#ffab00" : data1?.telegramSending === 3 ? "#71dd37" : data1?.telegramSending === 4 ? "#ff3e1d" : data1?.telegramSending === 5 ? "#696cff" : "" }}
                                                         defaultValue={
                                                             data1?.telegramSending === 1 ? "Ruxsat so'ralmadi" : data1?.telegramSending === 2 ? "Ruxsat so'raldi" : data1?.telegramSending === 3 ? "Tasdiqlandi" : data1?.telegramSending === 4 ? "Bekor qilindi" : data1?.telegramSending === 5 ? "Xabar uzatildi" : ""
-                                                        } />
+                                                        } 
+                                                        
+                                                        />
                                                     <label for="floatingInput">Telegram</label>
                                                 </div>
                                             </div>
@@ -226,7 +233,9 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                             <input className="form-check-input" type="checkbox"
                                                 id="defaultCheck3" checked={telegram}
                                                 defaultChecked={editModal?.item?.telegramSending > 1}
-                                                onChange={() => setTelegram(!telegram)} />
+                                                onChange={() => setTelegram(!telegram)} 
+                                                disabled={data1.status!== 0}
+                                                />
                                             <label className="form-check-label" for="defaultCheck3"> Telegram kanalga e'lon berish uchun ruxsat so'rash</label>
                                         </div>
                                     </div>
@@ -238,7 +247,9 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                             <input className="form-check-input" type="checkbox"
                                                 id="defaultCheck4" checked={web}
                                                 defaultChecked={editModal?.item?.webSending > 1}
-                                                onChange={() => setWeb(!web)} />
+                                                onChange={() => setWeb(!web)} 
+                                                disabled={data1.status!== 0}
+                                                />
                                             <label className="form-check-label" for="defaultCheck4"> Websaytga e'lon berish uchun ruxsat so'rash</label>
                                         </div>
                                     </div>
@@ -275,34 +286,49 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
                                     }
                                 </Wrapper>
 
-                                <div className="col-lg-4">
-                                    <div className="mb-3">
-                                        <button className="btn-lg btn btn-success w-100"
-                                            type='button'
-                                            onClick={() => accessFunc()}>
-                                            Tasdiqlash
-                                        </button>
-                                    </div>
-                                </div>
 
-                                <div className="col-lg-4">
-                                    <div className="mb-3">
-                                        <button className="btn-lg btn btn-danger w-100"
-                                            type='button'
-                                            onClick={() => deleteFunc()}>
-                                            O'chirish
-                                        </button>
-                                    </div>
-                                </div>
 
-                                <div className="col-lg-4">
-                                    <div className="mb-3">
-                                        <button className="btn-lg btn btn-info w-100"
-                                            type='button'
-                                            onClick={() => cancelFunc()}>
-                                            Bekor qilish
-                                        </button>
-                                    </div>
+                                <div className="col-lg-12">
+                                    {
+                                        data1.status !== 0 ? (
+                                            <h4 className="modal-title text-center text-danger my-2">
+                                                Siz ushbu postga reaksiya bildirgansiz. <br /> Shu sababli, uni o'zgartira olmaysiz!
+                                            </h4>
+                                        ) : (
+                                            <div className='row'>
+                                                <div className="col-lg-4">
+                                                    <div className="mb-3">
+                                                        <button className="btn-lg btn btn-success w-100"
+                                                            type='button'
+                                                            onClick={() => accessFunc()}>
+                                                            Tasdiqlash
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-lg-4">
+                                                    <div className="mb-3">
+                                                        <button className="btn-lg btn btn-danger w-100"
+                                                            type='button'
+                                                            onClick={() => deleteFunc()}>
+                                                            O'chirish
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-lg-4">
+                                                    <div className="mb-3">
+                                                        <button className="btn-lg btn btn-info w-100"
+                                                            type='button'
+                                                            onClick={() => cancelFunc()}>
+                                                            Bekor qilish
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
                                 </div>
 
                             </div>

@@ -30,7 +30,7 @@ function Category() {
             <div className="card">
                 <div className="card-header">
                     <div className="d-sm-flex align-items-center justify-content-between">
-                        <h2 className="mb-sm-0 font-size-24">Kategoriyalar</h2>
+                        <h2 className="mb-sm-0 font-size-24">Baholash me`zonlari</h2>
 
                         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                             <button className="btn btn-primary btn-lg"
@@ -46,8 +46,8 @@ function Category() {
                         <thead>
                             <tr className='text-center'>
                                 <th>№</th>
-                                <th>Nomi</th>
-                                <th>Qiymati</th>
+                                <th>Baholash me`zoni</th>
+                                <th>Ball</th>
                                 <th>Amallar</th>
                             </tr>
                         </thead>
@@ -57,7 +57,7 @@ function Category() {
                                     return (
                                         <tr className='text-center table-light' key={index}>
                                             <th>{index + 1}</th>
-                                            <td>{item.name}</td>
+                                            <td className='text-start' style={{paddingLeft: "50px"}}>{item.name}</td>
                                             <td>{item.value}</td>
                                             <td className="text-center">
                                                 <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }} onClick={() => setEditModal({ isShow: true, item: item })} />

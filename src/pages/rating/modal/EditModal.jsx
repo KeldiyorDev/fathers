@@ -36,7 +36,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             <div className="modal-dialog-centered" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="modal-content" >
                     <div className="modal-header bg-primary py-3">
-                        <h5 className="modal-title text-white">Kategoriyani tahrirlash</h5>
+                        <h5 className="modal-title text-white">Baholash me`zonini tahrirlash</h5>
                         <button type="button" className="btn-close"
                             onClick={() => setEditModal({ isShow: false, item: {} })}></button>
                     </div>

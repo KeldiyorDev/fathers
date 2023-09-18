@@ -21,21 +21,27 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             "login": login.current.value,
             "password": password.current.value,
         }).then((res) => {
-            Alert(setAlert, "success", "Muvafaqqiyatli o'zgartirildi!");
+            if (res.data === 202) {
+                Alert(setAlert, "danger", "Bunday login mavjud");
+            } else {
+                Alert(setAlert, "success", "Muvafaqqiyatli o'zgartirildi!");
 
-            const newData = data.filter((item) => {
-                if (item.id === editModal.item.id) {
-                    item.name = name.current.value
-                    item.leaderName = leaderName.current.value
-                    item.login = login.current.value
-                    item.password = password.current.value
-                }
+                const newData = data.filter((item) => {
+                    if (item.id === editModal.item.id) {
+                        item.name = name.current.value
+                        item.leaderName = leaderName.current.value
+                        item.login = login.current.value
+                        item.password = password.current.value
+                    }
 
-                return item
-            })
+                    return item
+                })
 
-            setData(newData)
-            setEditModal({ isShow: false, item: {} })
+                setData(newData)
+                setEditModal({ isShow: false, item: {} })
+            }
+        }).catch((err) => {
+            Alert(setAlert, "danger", "Ulanishda xatolik");
         })
     }
     return (

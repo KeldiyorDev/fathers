@@ -54,10 +54,10 @@ function File() {
                                         <tr className='text-center'>
                                             <th>№</th>
                                             <th>Nomi</th>
-                                            <th>Kategoriya nomi</th>
+                                            <th>Baholash me`zoni</th>
                                             <th>Sinfi</th>
                                             <th>Ismi</th>
-                                            <th>Qiymati</th>
+                                            <th>Ball</th>
                                             <th>Qo'shilgan sanasi</th>
                                             <th>Status</th>
                                             <th>Amallar</th>
@@ -109,7 +109,7 @@ function File() {
                                     style={{ width: "200px" }} />
                                 <h2 className="mb-sm-0 font-size-24 text-primary"
                                 // style={{color: "#98ACF8"}}
-                                >O'qilmagan postlar yo'q</h2>
+                                >Postlar yo'q</h2>
 
                             </div>
                         )
@@ -121,6 +121,8 @@ function File() {
             {
                 editModal.isShow && (
                     <EditModal
+                        page={page}
+                        setPage={setPage}
                         data={data}
                         setData={setData}
                         editModal={editModal}

@@ -21,16 +21,20 @@ function AddModal({ data, setData, addModal, setAddModal, Alert, setAlert }) {
             "login": login.current.value,
             "password": password.current.value,
         }).then((res) => {
-            Alert(setAlert, "success", "Muvafaqqiyatli qo'shildi");
-            setAddModal(false);
-            console.log(res.data);
-            axiosInstance.get(`/director/Classes/GetAll`)
-                .then((res) => {
-                    setData(res.data.elements);
-                    console.log(res.data);
-                })
+            if (res.data === 202) {
+                Alert(setAlert, "danger", "Bunday login mavjud");
+            } else {
+                Alert(setAlert, "success", "Muvafaqqiyatli qo'shildi");
+                setAddModal(false);
+                console.log(res.data);
+                axiosInstance.get(`/director/Classes/GetAll`)
+                    .then((res) => {
+                        setData(res.data.elements);
+                        console.log(res.data);
+                    })
+            }
         }).catch((error) => {
-            Alert(setAlert, "danger", "Xatolik");
+            Alert(setAlert, "danger", "Ulanishda xatolik");
         })
     }
     return (

@@ -55,11 +55,15 @@
   padding-bottom: 24px;
 }
 
-.modal::-webkit-scrollbar{
+.modal::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
 .layout-page {
   padding-left: 0 !important;
+}
+
+.layout-menu-fixed {
+  overflow-y: auto;
 }

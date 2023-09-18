@@ -32,7 +32,7 @@ function AddModal({ data, setData, addModal, setAddModal, Alert, setAlert }) {
             <div className="modal-dialog-centered" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="modal-content" >
                     <div className="modal-header bg-primary py-3">
-                        <h5 className="modal-title text-white">Yangi kategoriya qo'shish</h5>
+                        <h5 className="modal-title text-white">Yangi baholash me`zoni qo'shish</h5>
                         <button type="button" className="btn-close"
                             onClick={() => setAddModal(false)}></button>
                     </div>

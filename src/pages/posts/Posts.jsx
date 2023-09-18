@@ -113,30 +113,33 @@ function Posts() {
 
         <div className="card-body">
           {
-            data?.length > 0 && (
+            data?.length > 0 ? (
               <>
                 <table className="table table-primary table-bordered align-middle mb-0 table-striped">
                   <thead>
                     <tr className='text-center'>
                       <th>№</th>
                       <th>Nomi</th>
-                      <th>Kategoriya nomi</th>
+                      <th>Baholash me`zoni</th>
+                      {/* <th>Maktabi</th> */}
                       <th>Sinfi</th>
                       <th>Ismi</th>
-                      <th>Qiymati</th>
+                      <th>Ball</th>
                       <th>Qo'shilgan sanasi</th>
-                      <th>Status</th>
+                      <th>Maktab</th>
                       <th>Amallar</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data?.map((item, index) => {
                       return (
-                        <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-light" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
+                        // <tr className={`text-center ${item?.description === "Tasdiqlandi" ? "table-light" : item?.description === "Bekor qilindi!" ? "table-danger" : "table-warning"}`} key={index}>
+                        <tr className="text-center table-light" key={index}>
                           <th>{index + 1}</th>
                           {/* <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td> */}
                           <td>{item.name}</td>
                           <td>{item.categoryName}</td>
+                          {/* <td>{item?.schoolName}</td> */}
                           <td>{item?.className}</td>
                           <td>{item?.fathersName}</td>
                           <td>{item.price}</td>
@@ -171,7 +174,15 @@ function Posts() {
                 </div>
 
               </>
-            ) 
+            ) : (
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: "16px" }} >
+                <img src="/assets/img/search.png" alt=""
+                  style={{ width: "200px" }} />
+                <h2 className="mb-sm-0 font-size-24 text-primary"
+                // style={{color: "#98ACF8"}}
+                >Postlar yo'q</h2>
+              </div>
+            )
           }
         </div>
       </div>

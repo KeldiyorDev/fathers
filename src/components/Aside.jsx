@@ -32,6 +32,46 @@ function Aside({ showAside, setShowAside }) {
 
                         <ul className="menu-inner py-1">
                             {
+                                user?.role === "admin" && (
+                                    <li className={`my-1 menu-item ${pathname === "/category" && "active"}`}>
+                                        <Link to="/category" className="menu-link">
+                                            <BiSolidCategory fontSize={"18px"} className='me-2' />
+                                            <div data-i18n="Analytics">Baholash me`zonlari</div>
+                                        </Link>
+                                    </li>
+                                )}
+
+                            {
+                                user?.role === "admin" && (
+                                    <li className={`my-1 menu-item ${pathname === "/schools" && "active"}`}>
+                                        <Link to="/schools" className="menu-link">
+                                            <FaSchool fontSize={"18px"} className='me-2' />
+                                            <div data-i18n="Analytics">Maktablar</div>
+                                        </Link>
+                                    </li>
+                                )}
+
+                            {
+                                user?.role === "director" && (
+                                    <li className={`my-1 menu-item ${pathname === "/classes" && "active"}`}>
+                                        <Link to="/classes" className="menu-link">
+                                            <MdSchool fontSize={"18px"} className='me-2' />
+                                            <div data-i18n="Analytics">Sinflar</div>
+                                        </Link>
+                                    </li>
+                                )}
+
+                            {
+                                user?.role === "classleader" && (
+                                    <li className={`my-1 menu-item ${pathname === "/student" && "active"}`}>
+                                        <Link to="/student" className="menu-link">
+                                            <PiStudentFill fontSize={"18px"} className='me-2' />
+                                            <div data-i18n="Analytics">O'quvchilar</div>
+                                        </Link>
+                                    </li>
+                                )}
+
+                            {
                                 (user?.role === "director") && (
                                     <li className={`my-1 menu-item ${pathname === "/unread" && "active"}`}>
                                         <Link to="/unread" className="menu-link">
@@ -69,46 +109,6 @@ function Aside({ showAside, setShowAside }) {
                                         <Link to="/director-posts" className="menu-link">
                                             <MdMarkunread fontSize={"18px"} className='me-2' />
                                             <div data-i18n="Analytics">Barcha postlar</div>
-                                        </Link>
-                                    </li>
-                                )}
-
-                            {
-                                user?.role === "admin" && (
-                                    <li className={`my-1 menu-item ${pathname === "/schools" && "active"}`}>
-                                        <Link to="/schools" className="menu-link">
-                                            <FaSchool fontSize={"18px"} className='me-2' />
-                                            <div data-i18n="Analytics">Maktablar</div>
-                                        </Link>
-                                    </li>
-                                )}
-
-                            {
-                                user?.role === "admin" && (
-                                    <li className={`my-1 menu-item ${pathname === "/category" && "active"}`}>
-                                        <Link to="/category" className="menu-link">
-                                            <BiSolidCategory fontSize={"18px"} className='me-2' />
-                                            <div data-i18n="Analytics">Kategoriyalar</div>
-                                        </Link>
-                                    </li>
-                                )}
-
-                            {
-                                user?.role === "director" && (
-                                    <li className={`my-1 menu-item ${pathname === "/classes" && "active"}`}>
-                                        <Link to="/classes" className="menu-link">
-                                            <MdSchool fontSize={"18px"} className='me-2' />
-                                            <div data-i18n="Analytics">Sinflar</div>
-                                        </Link>
-                                    </li>
-                                )}
-
-                            {
-                                user?.role === "classleader" && (
-                                    <li className={`my-1 menu-item ${pathname === "/student" && "active"}`}>
-                                        <Link to="/student" className="menu-link">
-                                            <PiStudentFill fontSize={"18px"} className='me-2' />
-                                            <div data-i18n="Analytics">O'quvchilar</div>
                                         </Link>
                                     </li>
                                 )}

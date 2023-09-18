@@ -190,7 +190,7 @@ function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Al
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-9">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <select className="form-select w-100"
@@ -210,20 +210,20 @@ function AddReting({ data, setData, posts, setPosts, addReting, setAddReting, Al
                                                     })
                                                 }
                                             </select>
-                                            <label for="floatingInput">Kategoriya</label>
+                                            <label for="floatingInput">Baholash me`zoni</label>
 
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-3">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={price}
                                             />
-                                            <label for="floatingInput">Qiymati</label>
+                                            <label for="floatingInput">Ball</label>
                                         </div>
                                     </div>
                                 </div>

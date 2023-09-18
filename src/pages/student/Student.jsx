@@ -61,10 +61,10 @@ function Student() {
                                 data?.length > 0 && data?.map((item, index) => {
                                     return (
                                         <tr className='text-center table-light' key={index}>
-                                            <th>{index + 1}</th>
+                                            <th onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{index + 1}</th>
                                             <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.name}</td>
-                                            <td>{item.fathersName}</td>
-                                            <td>{item?.rating}</td>
+                                            <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item.fathersName}</td>
+                                            <td onClick={() => setRetingModal({ isShow: true, item: item })} style={{ cursor: "pointer" }}>{item?.rating}</td>
                                             <td className="text-center">
                                                 <AiFillEdit fontSize={"24px"} cursor={"pointer"} color='#71dd37' style={{ margin: "0 8px" }} onClick={() => setEditModal({ isShow: true, item: item })} />
                                                 <AiFillDelete fontSize={"24px"} cursor={"pointer"} color='#ff3e1d' onClick={() => setDeleteModal({ isShow: true, id: item.id })} />

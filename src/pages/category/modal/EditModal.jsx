@@ -12,22 +12,18 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             name: nameRef.current.value,
             value: valueRef.current.value,
         });
-        axiosInstance.put(`/update`, {
-            id: editModal.item.id,
+        axiosInstance.put(`/tumanxtb/Categories/Update?id=${editModal?.item?.id}`, {
             name: nameRef.current.value,
             value: valueRef.current.value,
         }).then((res) => {
             Alert(setAlert, "success", "Muvafaqqiyatli o'zgartirildi!");
 
-            const newData = data.filter((item) => {
-                if (item.id === editModal.item.id) {
-                    item.name = nameRef.current.value
-                }
+            axiosInstance.get(`/tumanxtb/Categories/GetAll`)
+                .then((res) => {
+                    setData(res.data.elements);
+                    console.log(res.data);
+                })
 
-                return item
-            })
-
-            setData(newData)
             setEditModal({ isShow: false, item: {} })
         })
     }
@@ -36,7 +32,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert }) 
             <div className="modal-dialog-centered" style={{ width: "60%", margin: "0 auto" }}>
                 <div className="modal-content" >
                     <div className="modal-header bg-primary py-3">
-                        <h5 className="modal-title text-white">Kategoriyani tahrirlash</h5>
+                        <h5 className="modal-title text-white">Baholash me`zonini tahrirlash</h5>
                         <button type="button" className="btn-close"
                             onClick={() => setEditModal({ isShow: false, item: {} })}></button>
                     </div>

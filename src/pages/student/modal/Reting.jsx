@@ -46,8 +46,8 @@ function Reting({ data, setData, retingModal, setRetingModal, Alert, setAlert })
                                 <tr className='text-center'>
                                     <th>№</th>
                                     <th>Nomi</th>
-                                    <th>Kategoriya nomi</th>
-                                    <th>Qiymati</th>
+                                    <th>Baholash me`zoni</th>
+                                    <th>Ball</th>
                                     <th>Qo'shilgan sanasi</th>
                                     <th>Status</th>
                                     <th>Amallar</th>

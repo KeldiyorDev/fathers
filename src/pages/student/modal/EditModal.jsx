@@ -205,7 +205,8 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                         <div className="form-floating">
                                             <input type="text" className="form-control" ref={name}
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                defaultValue={data1?.name} maxLength={50} />
+                                                defaultValue={data1?.name} maxLength={50}
+                                                disabled={data1.status !== 0} />
                                             <label for="floatingInput">Nomi</label>
                                         </div>
                                     </div>
@@ -216,7 +217,8 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                         <div className="form-floating">
                                             <input type="text" className="form-control" ref={title}
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
-                                                defaultValue={data1?.title} maxLength={100} />
+                                                defaultValue={data1?.title} maxLength={100}
+                                                disabled={data1.status !== 0} />
                                             <label for="floatingInput">Sarlavha</label>
                                         </div>
                                     </div>
@@ -230,14 +232,15 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                                 aria-describedby="floatingInputHelp"
                                                 id="floatingInput2"
                                                 defaultValue={data1?.message}
-                                                maxLength={5000} />
+                                                maxLength={5000}
+                                                disabled={data1.status !== 0} />
                                             <label for="floatingInput2">Izoh</label>
                                         </div>
 
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-9">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <select className="form-select w-100"
@@ -246,6 +249,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                                 ref={selectRef}
                                                 style={{ height: "58px" }}
                                                 onChange={(e) => selected(e)}
+                                                disabled={data1.status !== 0}
                                             >
                                                 {
                                                     category.map((item, index) => {
@@ -257,19 +261,19 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                                     })
                                                 }
                                             </select>
-                                            <label for="floatingInput">Kategoriya</label>
+                                            <label for="floatingInput">Baholash me`zoni</label>
 
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-3">
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <input type="text" className="form-control" disabled
                                                 id="floatingInput" aria-describedby="floatingInputHelp"
                                                 value={price} />
-                                            <label for="floatingInput">Qiymati</label>
+                                            <label for="floatingInput">Ball</label>
                                         </div>
                                     </div>
                                 </div>
@@ -406,7 +410,7 @@ function EditModal({ data, setData, editModal, setEditModal, Alert, setAlert, po
                                     {
                                         data1.status !== 0 && (
                                             <h4 className="modal-title text-center text-danger mt-3">
-                                                Siz ushbu postga reaksiya bildirgansiz. <br /> Shu sababli, uni o'zgartira olmaysiz!
+                                                Direktor ushbu postga reaksiya bildirgan. <br /> Shu sababli, uni o'zgartira olmaysiz!
                                             </h4>
                                         )
                                     }
