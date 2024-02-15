@@ -1,0 +1,43 @@
+name: Pipeline
+
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build:
+    name: BUILD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch (fast)
+        uses: actions/checkout@v3
+
+      - name: "Building project 🏗"
+        run: |
+          yarn
+          yarn build
+          zip -r dist.zip build
+
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          source: "dist.zip"
+          target: "/var/www/edureyting/father"
+  deploy:
+    name: DEPLOY
+    runs-on: ubuntu-latest
+    needs: ["build"]
+    steps:
+      - name: Install SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/edureyting/father
+            rm -rf build/
+            unzip build.zip
+            systemctl restart nginx
